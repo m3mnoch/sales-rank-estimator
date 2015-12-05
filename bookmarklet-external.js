@@ -9,8 +9,22 @@ else {
 }
  
 function doWork() {
-	salesRankStr = '#1,119';
-	salesRankInt = parseInt(salesRankStr.replace(/\D/g,''));
+
+	var salesRankStr = $("#SalesRank").text();
+	var salesRankArray = salesRankStr.split(/\r\n|\r|\n/g);
+	salesRankInt = -1;
+
+	for (var i=0; i < salesRankArray.length; i++) {
+		if (salesRankArray[0] !== undefined && salesRankArray[0].length > 1) {
+			salesRankInt = parseInt(salesRankArray[0].replace(/\D/g,''));
+		}
+	}
+
+
+
+
+	//salesRankStr = '#1,119';
+	//salesRankInt = parseInt(salesRankStr.replace(/\D/g,''));
     
-    alert("sales rank try #1: " + salesRankInt);
+    alert("sales rank: " + salesRankInt);
 }
