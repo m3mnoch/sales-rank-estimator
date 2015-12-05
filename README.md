@@ -27,5 +27,10 @@ Sales per day at 70%: $128.16
 ```
 
 ### FAQ
-> What's a bookmarklet, you ask?  Here's a helpful link that, helpfully, might be helpful.
+> *What's a bookmarklet, you ask?*  Here's a helpful link that, helpfully, might be helpful.
 > https://support.mozilla.org/en-US/kb/bookmarklets-perform-common-web-page-tasks
+>
+
+> *Where did you get these calculations?*  i've dug up from one of those experts who study these sorts of things!  this guy: http://kindlepreneur.com/amazon-kdp-sales-rank-calculator/
+>
+> He has lots of other tools and such to check out.  http://kindlepreneur.com
