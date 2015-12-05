@@ -9,5 +9,5 @@ else {
 }
  
 function doWork() {
-    alert('works!');
+    alert(parseInt('#1,119'));
 }
