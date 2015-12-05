@@ -10,7 +10,7 @@ else {
  
 function doWork() {
 	salesRankStr = '#1,119';
-	salesRankInt = parseInt(salesRank.replace(/\D/g,''));
+	salesRankInt = parseInt(salesRankStr.replace(/\D/g,''));
     
     alert("sales rank try #1: " + salesRankInt);
 }
