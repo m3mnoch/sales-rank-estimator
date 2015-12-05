@@ -33,7 +33,7 @@ function doWork() {
 		if (salesRankInt > 0) break;
 	}
 
-	var notificationMessage = "Sales Rank: " + salesRankInt + ", Sales per day: ";
+	var notificationMessage = "Sales Rank: " + salesRankInt + "\nUnits per day: ";
 
 
 	// ----------------------------------------------------------
@@ -66,5 +66,8 @@ function doWork() {
 
 	}
 
-	alert(notificationMessage + ", Price: " + salesPrice);
+	notificationMessage += "\nSales per day at 15%: $" + parseFloat(salesPrice * bookSalesPerDay * .15).toFixed(2);
+	notificationMessage += "\nSales per day at 70%: $" + parseFloat(salesPrice * bookSalesPerDay * .7).toFixed(2);
+
+	alert(notificationMessage);
 }
