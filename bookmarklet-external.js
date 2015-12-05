@@ -13,6 +13,8 @@ function doWork() {
 	// ----------------------------------------------------------
 	// pull the sales rank from the page
 	var salesRankStr = $("#SalesRank").text();
+	var salesPrice = parseFloat($(".a-color-price").first().text().replace(/\$/g, ''));
+
 	var salesRankLineArray = salesRankStr.split(/\r\n|\r|\n/g);
 
 	salesRankInt = -1;
@@ -31,7 +33,7 @@ function doWork() {
 		if (salesRankInt > 0) break;
 	}
 
-	var notificationMessage = "Sales Rank: " + salesRankInt + ", ";
+	var notificationMessage = "Sales Rank: " + salesRankInt + ", Sales per day: ";
 
 
 	// ----------------------------------------------------------
@@ -57,15 +59,12 @@ function doWork() {
 
 	bookSalesPerDay = Math.round(bookSalesPerDay);
 	if (bookSalesPerDay < 1) {
-		notificationMessage += "Less than one sale per Day";
-
-	} else if (bookSalesPerDay == 1) {
-		notificationMessage += "1 sale per Day";
+		notificationMessage += "Less than one";
 
 	} else {
-		notificationMessage += bookSalesPerDay + " sales per Day";
+		notificationMessage += bookSalesPerDay;
 
 	}
 
-	alert(notificationMessage);
+	alert(notificationMessage + ", Price: " + salesPrice);
 }
