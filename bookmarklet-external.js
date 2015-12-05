@@ -66,7 +66,7 @@ function doWork() {
 
 	}
 
-	notificationMessage += "\nSale per Unit: $" + salesPrice;
+	notificationMessage += "\nPrice per Unit: $" + salesPrice;
 	notificationMessage += "\nSales per day at 15%: $" + parseFloat(salesPrice * bookSalesPerDay * .15).toFixed(2);
 	notificationMessage += "\nSales per day at 70%: $" + parseFloat(salesPrice * bookSalesPerDay * .7).toFixed(2);
 

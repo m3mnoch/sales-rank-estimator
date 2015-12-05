@@ -10,9 +10,13 @@ First, you will need to get the bookmarklet loaded in your browser.  Here's a ha
 Second, browse to an Amazon book page and click your bookmarklet.
 
 For example:
-http://www.amazon.com/Adventures-Huckleberry-Finn-Mark-Twain/dp/0486280616
+http://www.amazon.com/gp/product/B00X6KZ6SW/
 
 At the time of this writing gets:
 ```
-Sales Rank: 1810
+Sales Rank: 1925
+Units per day: 92
+Price per Unit: $1.99
+Sales per day at 15%: $27.46
+Sales per day at 70%: $128.16
 ```
