@@ -9,5 +9,8 @@ else {
 }
  
 function doWork() {
-    alert(parseInt('#1,119'));
+	salesRankStr = '#1,119';
+	salesRankInt = parseInt(salesRank.replace(/\D/g,''));
+    
+    alert(salesRankInt);
 }
