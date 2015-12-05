@@ -12,5 +12,5 @@ function doWork() {
 	salesRankStr = '#1,119';
 	salesRankInt = parseInt(salesRank.replace(/\D/g,''));
     
-    alert(salesRankInt);
+    alert("sales rank try #1: " + salesRankInt);
 }
