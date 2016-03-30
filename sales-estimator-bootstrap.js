@@ -12,13 +12,13 @@
 
 	function preload() {
 		//"Help us improve our Author Pages";
-		head.ready(function () {
-            validate();
-        });
-
 		head.load(
 	    	"https://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"
 		);
+
+		head.ready(function () {
+            validate();
+        });
 
 	}
 
