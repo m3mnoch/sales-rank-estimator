@@ -10,7 +10,7 @@
 		preload();
 	}
 
-	var preload = function() {
+	function preload() {
 		//"Help us improve our Author Pages";
 		head.ready(function () {
             validate();
