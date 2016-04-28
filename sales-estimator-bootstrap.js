@@ -3,6 +3,10 @@
 	// ==================================================================================
 	// load our dependencies
 	// ----------------------------------------------------------------------------------
+
+	var scriptHost = "cdn.rawgit.com/m3mnoch/sales-rank-estimator/master/";
+	//scriptHost = "localhost:8000/";
+
 	if (typeof window.head == 'undefined') {
 		script = document.createElement('script');
 		script.src = 'https://cdnjs.cloudflare.com/ajax/libs/headjs/1.0.3/head.min.js';
@@ -13,7 +17,8 @@
 	}
 	function preload() {
 		head.load(
-			"https://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"
+			"https://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js",
+			scriptHost + "sales-estimator-style.css"
 		);
 		head.ready(function () {
 			init();
@@ -24,25 +29,44 @@
 
 	var bookTrackerCount = 0;
 	var salesData = [];
+	var results = {
+		"salesRank":0
+		,"unitsPerDay":0
+		,"revenuePerDay":0
+		,"revenuePerUnit":0
+		,"profit15":0
+		,"profit70":0
+	}
 
 	var init = function() {
 		if ($('body').text().indexOf("Help us improve our Author Pages") >= 0) {
-			alert("author page");
+			console.log("Author page found.");
+			$.each( $('body').find('#mainResults .s-access-detail-page'), function( i, bookLink ) {
+				var bookLink = $(bookLink).attr('href');
+				console.log("found link: " + bookLink);
+				bookTrackerCount++;
+				$.get(bookLink, function(data) {
+					//console.log("fetched data: " + data);
+					parseBookPageHtml(data);
+				});
+			});
 
 		} else if ($("#SalesRank").text() != "") {
-			//alert("book page");
+			console.log("Book page found.");
 			bookTrackerCount++;
 			parseBookPageHtml($('body').html());
 
 		} else {
-			alert("random page");
+			alert("ERROR: Not and Amazon.com book or author page.");
 		}
 	}
 
 
 	var checkFinished = function() {
 		if (bookTrackerCount <= 0) {
-			displayResults();
+			compileResults();
+
+			alertResults();
 		}
 	}
 
@@ -50,6 +74,8 @@
 	var parseBookPageHtml = function(htmlString) {
 
 		var htmlDom = $(htmlString);
+
+		console.log("Estimating revenue from: " + htmlDom.find("h1#title").text().replace(/\n/g, '').trim());
 
 		// ----------------------------------------------------------
 		// pull the sales rank from the page
@@ -91,6 +117,21 @@
 
 
 	var displayResults = function() {
+	}
+
+	var alertResults = function() {
+		var notificationMessage = "Sales Rank: " + results.salesRank;
+		notificationMessage += "\nUnits per day: " + results.unitsPerDay;
+		notificationMessage += "\nRevenue per Day: $" + results.revenuePerDay;
+		notificationMessage += "\nRevenue per Unit: $" + results.revenuePerUnit;
+		notificationMessage += "\nSales per day at 15%: $" + results.profit15;
+		notificationMessage += "\nSales per day at 70%: $" + results.profit70;
+
+		alert(notificationMessage);
+	}
+
+
+	var compileResults = function() {
 		if (salesData.length == 0) {
 			alert('no books found!');
 			return;
@@ -103,30 +144,39 @@
 		var perDayRevenue70 = 0.0;
 
 		for (var i=0; i< salesData.length; i++) {
-			console.log(salesData[i]);
+			if (salesData[i].salesRank <= 0) salesData[i].salesRank = 999999999999;			
+			console.log(JSON.stringify(salesData[i]));
 
+			console.log('old rank per day: ' + bestSalesRank);
 			if (salesData[i].salesRank < bestSalesRank) bestSalesRank = salesData[i].salesRank;
+			console.log('new rank per day: ' + bestSalesRank);
+
+			console.log('old sales per day: ' + bookSalesPerDay);
 			bookSalesPerDay += salesData[i].bookSalesPerDay;
-			allBooksPrice = parseFloat(allBooksPrice + salesData[i].salesPrice).toFixed(2);
-			perDayRevenue15 = parseFloat(perDayRevenue15 + salesData[i].perDayRevenue15).toFixed(2);
-			perDayRevenue70 = parseFloat(perDayRevenue70 + salesData[i].perDayRevenue70).toFixed(2);
+			console.log('new sales per day: ' + bookSalesPerDay);
+
+			console.log('old revenue per day: ' + allBooksPrice);
+			allBooksPrice += parseFloat(salesData[i].salesPrice) * parseFloat(salesData[i].bookSalesPerDay);
+			console.log('new revenue per day: ' + allBooksPrice);
+
+			perDayRevenue15 = perDayRevenue15 + parseFloat(salesData[i].perDayRevenue15);
+			perDayRevenue70 = perDayRevenue70 + parseFloat(salesData[i].perDayRevenue70);
 		}
 
-		var notificationMessage = "Sales Rank: " + bestSalesRank + "\nUnits per day: ";
+		results.salesRank = parseInt(bestSalesRank);
 
 		if (bookSalesPerDay < 1) {
-			notificationMessage += "Less than one";
-
+			results.unitsPerDay = "Less than one";
 		} else {
-			notificationMessage += bookSalesPerDay;
+			results.unitsPerDay = parseInt(bookSalesPerDay);
 
 		}
 
-		notificationMessage += "\nPrice per Unit: $" + parseFloat(allBooksPrice / salesData.length).toFixed(2);
-		notificationMessage += "\nSales per day at 15%: $" + perDayRevenue15;
-		notificationMessage += "\nSales per day at 70%: $" + perDayRevenue70;
+		results.revenuePerDay = allBooksPrice.toFixed(2);
+		results.revenuePerUnit = parseFloat(allBooksPrice / salesData.length).toFixed(2);
+		results.profit15 = perDayRevenue15.toFixed(2);
+		results.profit70 = perDayRevenue70.toFixed(2);
 
-		alert(notificationMessage);
 	}
 
 
